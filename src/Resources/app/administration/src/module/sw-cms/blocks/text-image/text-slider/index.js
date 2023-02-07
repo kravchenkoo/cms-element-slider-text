@@ -1,13 +1,19 @@
 import './component';
-import './config';
 import './preview';
-Shopware.Service('cmsService').registerCmsElement({
+Shopware.Service('cmsService').registerCmsBlock({
     name: 'text-slider',
-    label: 'sw-cms.elements.element.label',
-    component: 'sw-cms-el-image-with-text',
-    configComponent: 'sw-cms-el-config-image-with-text',
-    previewComponent: 'sw-cms-el-preview-image-with-text',
+    category: 'text-image',
+    label: 'Image Slider Text',
+    component: 'sw-cms-block-image-slider-text',
+    previewComponent: 'sw-cms-preview-text-slider',
     defaultConfig: {
-
+        marginBottom: '20px',
+        marginTop: '20px',
+        marginLeft: '20px',
+        marginRight: '20px',
+        sizingMode: 'boxed'
+    },
+    slots: {
+        slider: 'image-slider-text',
     }
 });

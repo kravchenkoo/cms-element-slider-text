@@ -1,6 +1,6 @@
 {
   "name": "swag/plugin-skeleton",
-  "description": "Skeleton plugin",
+  "description": "Image Slider Text",
   "type": "shopware-platform-plugin",
   "license": "MIT",
   "autoload": {
@@ -11,8 +11,8 @@
   "extra": {
     "shopware-plugin-class": "ITDImageSliderText\\ITDImageSliderText",
     "label": {
-      "de-DE": "Skeleton plugin",
-      "en-GB": "Skeleton plugin"
+      "de-DE": "Image Slider Text",
+      "en-GB": "Image Slider Text"
     }
   }
 }

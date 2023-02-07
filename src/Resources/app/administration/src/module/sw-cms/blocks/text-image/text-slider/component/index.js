@@ -1,5 +1,6 @@
-{% block sw_cms_block_text-slider %}
-<div class="sw-cms-block-text-slider">
-    <slot name="left">{% block sw_cms_block_two_images_text_slot_left %}{% endblock %}</slot>
-</div>
-{% endblock %}
+import template from './sw-cms-block-image-slider-text.html.twig';
+import './sw-cms-block-text-slider.scss';
+
+Shopware.Component.register('sw-cms-block-text-slider', {
+    template
+});
