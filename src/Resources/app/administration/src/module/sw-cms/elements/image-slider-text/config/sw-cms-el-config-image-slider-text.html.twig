@@ -240,7 +240,7 @@
                                     <div class="sw-cms-el-config-image-slider__settings-links sw-cms-el-config-image-slider__setting-option">
                                         <div
                                             v-for="(sliderItem, index) in items"
-                                            :key="sliderItem.mediaId"
+                                            :key="index"
                                             class="sw-cms-el-config-image-slider__settings-link"
                                         ><!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
 
@@ -266,77 +266,104 @@
                                                 </sw-field>
                                             {% endblock %}
                                             {% block sw_cms_element_image_config %}
-                                                <div class="sw-cms-el-config-image">
-                                                    <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
-                                                    {% block sw_cms_element_image_config_media_upload %}
-                                                        <sw-cms-mapping-field
-                                                            v-model="element.config.media"
-                                                            label="banner image"
-                                                            value-types="entity"
-                                                            entity="media"
-                                                        >
-                                                            <sw-media-upload-v2
-                                                                variant="regular"
-                                                                :upload-tag="uploadTag"
-                                                                :source="previewSource(index)"
-                                                                :allow-multi-select="false"
-                                                                :default-folder="cmsPageState.pageEntityName"
-                                                                :caption="$tc('sw-cms.elements.general.config.caption.mediaUpload')"
-                                                                @media-upload-sidebar-open="onOpenMediaModal(index)"
-                                                                @media-upload-remove-image="onImageRemove(index)"
-                                                            />
-                                                            <div
-                                                                slot="preview"
-                                                                slot-scope="{ demoValue }"
-                                                                class="sw-cms-el-config-image__mapping-preview"
+                                                <div class="sw-field--switch sw-cms-el-config-image-slider__settings-link-tab sw-field--default">
+                                                    <div class="sw-field--switch__content">
+                                                        <div class="sw-field--switch__input">
+                                                            <input
+                                                                :id="'bannerImg' + index"
+                                                                type="radio"
+                                                                name="banner"
+                                                                @change="imageUploadShow(index)"
+                                                                :value="sliderItem.showBanner"
                                                             >
-                                                                <img
-                                                                    v-if="demoValue.url"
-                                                                    :src="demoValue.url"
-                                                                    alt=""
-                                                                >
-                                                                <sw-alert
-                                                                    v-else
-                                                                    class="sw-cms-el-config-image__preview-info"
-                                                                    variant="info"
-                                                                >
-                                                                    {{ $tc('sw-cms.detail.label.mappingEmptyPreview') }}
-                                                                </sw-alert>
+                                                            <div class="sw-field__switch-state">
+                                                                <div class="sw-field__switch-state-knob"></div>
                                                             </div>
-                                                        </sw-cms-mapping-field>
-
-                                                        <sw-upload-listener
-                                                            :upload-tag="uploadTag"
-                                                            auto-upload
-                                                            @media-upload-finish="setBannerIndex(index)"
-                                                            @media-upload-finish="onSubImageUpload"
-                                                        />
-                                                    {% endblock %}
-                                                    {% block sw_cms_element_image_gallery_config_settings_banner_background %}
-                                                        {{ sliderItem }}
-                                                        <sw-text-field
-                                                            v-model="sliderItem.bannerBg"
-                                                            label="Banner background color if image not set HEX"
-                                                            placeholder="Banner background"
-                                                            :disabled="element.config.sliderItems.value[index].bannerImg"
-                                                        />
-                                                    {% endblock %}
-                                                    <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
-                                                    {% block sw_cms_element_image_config_media_modal %}
-                                                        <sw-media-modal-v2
-                                                            v-if="mediaModalIsOpen"
-                                                            variant="regular"
-                                                            :caption="$tc('sw-cms.elements.general.config.caption.mediaUpload')"
-                                                            :entity-context="cmsPageState.entityName"
-                                                            :allow-multi-select="false"
-                                                            :initial-folder-id="cmsPageState.defaultMediaFolderId"
-                                                            @media-upload-remove-image="onImageRemove(index)"
-                                                            @media-modal-selection-change="onSelectionChanges"
-                                                            @modal-close="onCloseModal"
-                                                        />
-                                                    {% endblock %}
+                                                        </div>
+                                                        <div class="sw-field">
+                                                            <div class="sw-field__label">
+                                                                <label :for="'bannerImg' + index" class="">
+                                                                    setup banner image
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <div v-if="sliderItem.showBanner">
+                                                    <div class="sw-cms-el-config-image">
+                                                        <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
+                                                        {% block sw_cms_element_image_config_media_upload %}
+                                                            <sw-cms-mapping-field
+                                                                v-model="element.config.media"
+                                                                label="banner image"
+                                                                value-types="entity"
+                                                                entity="media"
+                                                            >
+                                                                <sw-media-upload-v2
+                                                                    variant="regular"
+                                                                    :upload-tag="uploadTag"
+                                                                    :source="previewSource(index)"
+                                                                    :allow-multi-select="false"
+                                                                    :default-folder="cmsPageState.pageEntityName"
+                                                                    :caption="$tc('sw-cms.elements.general.config.caption.mediaUpload')"
+                                                                    @media-upload-sidebar-open="onOpenMediaModal(index)"
+                                                                    @media-upload-remove-image="onImageRemove(index)"
+                                                                />
+                                                                <div
+                                                                    slot="preview"
+                                                                    slot-scope="{ demoValue }"
+                                                                    class="sw-cms-el-config-image__mapping-preview"
+                                                                >
+                                                                    <img
+                                                                        v-if="demoValue.url"
+                                                                        :src="demoValue.url"
+                                                                        alt=""
+                                                                    >
+                                                                    <sw-alert
+                                                                        v-else
+                                                                        class="sw-cms-el-config-image__preview-info"
+                                                                        variant="info"
+                                                                    >
+                                                                        {{ $tc('sw-cms.detail.label.mappingEmptyPreview') }}
+                                                                    </sw-alert>
+                                                                </div>
+                                                            </sw-cms-mapping-field>
+
+                                                            <sw-upload-listener
+                                                                :upload-tag="uploadTag"
+                                                                auto-upload
+                                                                @media-upload-finish="setBannerIndex(index)"
+                                                                @media-upload-finish="onBannerImageUpload"
+                                                            />
+                                                        {% endblock %}
+                                                        <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
+                                                        {% block sw_cms_element_image_config_media_modal %}
+                                                            <sw-media-modal-v2
+                                                                v-if="mediaModalIsOpen"
+                                                                variant="regular"
+                                                                :caption="$tc('sw-cms.elements.general.config.caption.mediaUpload')"
+                                                                :entity-context="cmsPageState.entityName"
+                                                                :allow-multi-select="false"
+                                                                :initial-folder-id="cmsPageState.defaultMediaFolderId"
+                                                                @media-upload-remove-image="onImageRemove(index)"
+                                                                @media-modal-selection-change="onSelectionChanges"
+                                                                @modal-close="onCloseModal"
+                                                            />
+                                                        {% endblock %}
+                                                    </div>
+                                                </div>
+                                                {% block sw_cms_element_image_gallery_config_settings_banner_background %}
+                                                    <sw-text-field
+                                                        v-model="sliderItem.bannerBg"
+                                                        label="Banner background color HEX if image not set"
+                                                        placeholder="Banner background"
+                                                        :disabled="sliderItem.bannerImg.id"
+                                                    />
+                                                {% endblock %}
+
                                             {% endblock %}
+
+
 
                                             <!-- eslint-disable-next-line sw-deprecation-rules/no-twigjs-blocks -->
                                             {% block sw_cms_element_image_slider_config_settings_link_target %}

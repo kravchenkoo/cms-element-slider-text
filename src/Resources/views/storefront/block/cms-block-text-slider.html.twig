@@ -1,13 +1,11 @@
 {% block block_image_slider %}
-    {{ dump() }}
-    {{ dump(block) }}
-    {% set element = block.slots.getSlot('imageSlider') %}
+    {% set element = block.slots.getSlot('slider') %}
     {{ dump(element) }}
     {% set columns = 1 %}
 
     <div class="col-12" data-cms-element-id="{{ element.id }}">
         {% block element_image_slider %}
-            {% set sliderConfig = element.fieldConfig.elements %}
+            {% set sliderConfig = element.config %}
 
             <div class="cms-element-{{ element.type }}{% if sliderConfig.displayMode.value == "standard" and sliderConfig.verticalAlign.value %} has-vertical-alignment{% endif %}">
                 {% set baseSliderOptions = {
@@ -22,6 +20,9 @@
                         autoHeight: (sliderConfig.displayMode.value == "standard") ? true : false
                     }
                 } %}
+                {{ dump(baseSliderOptions) }}
+                {{ dump(element) }}
+                {{ dump(element.config.sliderItems.value|first) }}
 
                 {% block element_image_slider_alignment %}
                     {% if config.verticalAlign.value %}
@@ -34,8 +35,8 @@
                         {% block element_image_slider_inner %}
                             <div class="image-slider-container"
                                  data-base-slider-container="true">
-                                {% for image in element.data.sliderItems %}
 
+                                {% for image in element.config.sliderItems.value %}
                                     {% set imageElement %}
                                         <div class="image-slider-item{% if loop.first != true %} is-not-first{% endif %} is-{{ sliderConfig.displayMode.value }}"{% if sliderConfig.minHeight.value and  sliderConfig.displayMode.value == "cover" %} style="min-height: {{ sliderConfig.minHeight.value }}"{% endif %}>
                                             {% set attributes = {
@@ -43,13 +44,20 @@
                                                 'alt': (image.media.translated.alt ?: ''),
                                                 'title': (image.media.translated.title ?: '')
                                             } %}
+                                            {% set bannerImg = searchMedia([image.bannerImg.id], context.context) %}
+                                            <div class="image-slider-item-banner" style="background-color: #{{ image.bannerBg }};{% if image.bannerImg.id %}background-image: url('{{ bannerImg|first.url }}'){% endif %}">
+                                                <div class="banner-text">
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aut, consequatur consequuntur debitis dolor error eveniet expedita fuga, harum impedit molestias natus, recusandae repellat sed sint sunt ullam vero voluptates!
+                                                    <button class="banner-text-link">Get it!</button>
+                                                </div>
+                                            </div>
 
                                             {% if element.config.displayMode.value == 'cover' or element.config.displayMode.value == 'contain' %}
                                                 {% set attributes = attributes|merge({ 'data-object-fit': element.config.displayMode.value }) %}
                                             {% endif %}
-
+                                            {% set tileImg = searchMedia([image.mediaId], context.context) %}
                                             {% sw_thumbnails 'cms-image-slider-thumbnails' with {
-                                                media: image.media
+                                                media: tileImg|first
                                             } %}
                                         </div>
                                     {% endset %}
@@ -89,6 +97,11 @@
                                                     </button>
                                                 {% endblock %}
                                             {% endblock %}
+                                            {% if element.config.scrollDown.value %}
+                                                <button class="image-slider-scroll-down" data-scroll-down="{{ element.config.scrollDown.value }}">
+                                                    <div>Scroll down</div>
+                                                </button>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 {% endif %}

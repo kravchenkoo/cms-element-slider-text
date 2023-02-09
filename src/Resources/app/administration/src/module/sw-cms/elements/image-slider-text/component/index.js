@@ -29,6 +29,8 @@ Component.register('sw-cms-el-image-slider-text', {
             sliderPos: 0,
             imgPath: '/administration/static/img/cms/preview_mountain_large.jpg',
             imgSrc: '',
+            bannerImg: '',
+            bannerColor: 'ffffff',
         };
     },
 
@@ -121,9 +123,11 @@ Component.register('sw-cms-el-image-slider-text', {
 
         sliderItems: {
             handler() {
-                if (this.sliderItems && this.sliderItems.length > 0) {
-                    this.imgSrc = this.sliderItems[0].media.url;
-                    this.$emit('active-image-change', this.sliderItems[0].media);
+                if (this.element.config.sliderItems.value && this.element.config.sliderItems.value.length > 0) {
+                    this.imgSrc = this.element.config.sliderItems.value[0].mediaUrl;
+                    this.bannerImg = this.element.config.sliderItems.value[0].bannerImg.url;
+                    this.bannerColor = this.element.config.sliderItems.value[0].bannerBg;
+                    this.$emit('active-image-change', this.element.config.sliderItems.value[0].mediaUrl);
                 } else {
                     this.imgSrc = this.assetFilter(this.imgPath);
                 }
@@ -132,6 +136,7 @@ Component.register('sw-cms-el-image-slider-text', {
         },
 
         activeMedia() {
+            console.log(this.imgSrc);
             this.sliderPos = this.activeMedia.sliderIndex;
             this.imgSrc = this.activeMedia.url;
         },
@@ -146,16 +151,20 @@ Component.register('sw-cms-el-image-slider-text', {
             this.initElementConfig('image-slider-text');
             this.initElementData('image-slider-text');
 
-            if (this.sliderItems && this.sliderItems.length > 0) {
-                this.imgSrc = this.sliderItems[0].media.url;
-                this.$emit('active-image-change', this.sliderItems[this.sliderPos].media);
+            if (this.element.config.sliderItems.value && this.element.config.sliderItems.value.length > 0) {
+                this.imgSrc = this.element.config.sliderItems.value[0].mediaUrl;
+                this.bannerImg = this.element.config.sliderItems.value[0].bannerImg.url;
+                this.bannerColor = this.element.config.sliderItems.value[0].bannerBg;
+                this.$emit('active-image-change', this.element.config.sliderItems.value[this.sliderPos].mediaUrl);
             } else {
                 this.imgSrc = this.assetFilter(this.imgPath);
             }
+
         },
 
         setSliderItem(mediaItem, index) {
-            this.imgSrc = mediaItem.url;
+            console.log('setSliderItem',mediaItem, index);
+            this.imgSrc = mediaItem.mediaUrl;
             this.sliderPos = index;
             this.$emit('active-image-change', mediaItem, index);
         },
@@ -167,22 +176,25 @@ Component.register('sw-cms-el-image-slider-text', {
         },
 
         setSliderArrowItem(direction = 1) {
-            if (this.sliderItems.length < 2) {
+
+            if (this.element.config.sliderItems.value.length < 2) {
                 return;
             }
 
             this.sliderPos += direction;
 
             if (this.sliderPos < 0) {
-                this.sliderPos = this.sliderItems.length - 1;
+                this.sliderPos = this.element.config.sliderItems.value.length - 1;
             }
 
-            if (this.sliderPos > this.sliderItems.length - 1) {
+            if (this.sliderPos > this.element.config.sliderItems.value.length - 1) {
                 this.sliderPos = 0;
             }
-
-            this.imgSrc = this.sliderItems[this.sliderPos].media.url;
-            this.$emit('active-image-change', this.sliderItems[this.sliderPos].media, this.sliderPos);
+            console.log('setSliderArrowItem',this.sliderPos);
+            this.imgSrc = this.element.config.sliderItems.value[this.sliderPos].mediaUrl;
+            this.bannerImg = this.element.config.sliderItems.value[this.sliderPos].bannerImg.url;
+            this.bannerColor = this.element.config.sliderItems.value[this.sliderPos].bannerBg;
+            this.$emit('active-image-change', this.element.config.sliderItems.value[this.sliderPos].mediaUrl, this.sliderPos);
         },
     },
 });

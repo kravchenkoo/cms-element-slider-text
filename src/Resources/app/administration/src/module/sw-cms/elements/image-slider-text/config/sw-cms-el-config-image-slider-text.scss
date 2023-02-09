@@ -45,3 +45,24 @@
         margin-top: 10px;
     }
 }
+
+.sw-field--switch .sw-field--switch__input input[type=radio] {
+    opacity: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    background: none;
+    -webkit-appearance: none;
+    z-index: 2;
+    cursor: pointer;
+}
+.sw-field--switch .sw-field--switch__input input[type=radio]:checked~.sw-field__switch-state {
+    background: #189eff;
+}
+.sw-field--switch .sw-field--switch__input input[type=radio]:checked~.sw-field__switch-state .sw-field__switch-state-knob {
+    left: 10px;
+}

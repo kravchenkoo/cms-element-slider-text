@@ -50,21 +50,7 @@ Shopware.Service('cmsService').registerCmsElement({
         },
         scrollDown: {
             value: null,
-        },
-        media: {
-            source: 'static',
-            value: null,
-            entity: {
-                name: 'media',
-            },
-        },
-        url: {
-            source: 'static',
-            value: null,
-        },
-        newTab: {
-            source: 'static',
-            value: false,
+            source: 'static'
         },
     },
 });

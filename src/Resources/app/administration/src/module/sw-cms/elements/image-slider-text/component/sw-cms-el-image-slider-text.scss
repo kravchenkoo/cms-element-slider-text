@@ -40,6 +40,67 @@
                 padding-bottom: 30px;
             }
         }
+        .sw-cms-el-image-slider__banner-box {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            width: 40%;
+            padding: 25px;
+            transform: translateY(-50%);
+            background-repeat: no-repeat;
+            background-size: cover;
+            &:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                background-color: rgba(255, 255, 255, .5);
+            }
+            img {
+                max-width: 100%;
+            }
+            .banner-text-link {
+                display: block;
+                cursor: pointer;
+                margin: 15px auto 0;
+                padding: 0 20px;
+                font-size: 25px;
+                line-height: 45px;
+                border-radius: 12px;
+                border: 5px solid #666666;
+                background-color: rgba(102,102,102,1);
+                transition: background-color .25s ease;
+                &:hover {
+                    background-color: rgba(102,102,102,.5);
+                }
+            }
+        }
+    }
+    .image-slider-scroll-down {
+        position: absolute;
+        bottom: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: transparent;
+        border: none;
+        outline: none;
+        color: #fff;
+        text-align: center;
+        &:after {
+            content: "";
+            display: inline-block;
+            background-image: url(https://www.fitmeat.at/bundles/twigelfitmeattheme/assets/icon/double-arrow.svg);
+            background-position: center;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 30px;
+            height: 34px;
+        }
     }
 }
 
@@ -88,11 +149,12 @@
     &.is--nav-outside {
         .sw-cms-el-image-slider__navigation-button {
             &:first-child {
-                left: -25px;
+                left: auto;
+                right: 50%;
             }
 
             &:last-child {
-                right: -25px;
+                right: 6%;
             }
         }
     }

@@ -141,7 +141,11 @@ Component.register('sw-cms-el-config-image-slider-text', {
                     mediaId: item.id,
                     url: null,
                     newTab: false,
-                    bannerImg: {id: null},
+                    showBanner: false,
+                    bannerImg: {
+                        id: null,
+                        url: '',
+                    },
                     bannerBg:'FFFFFF'
                 });
             });
@@ -214,12 +218,19 @@ Component.register('sw-cms-el-config-image-slider-text', {
             }
             return null;
         },
-        async onSubImageUpload({ targetId }) {
+        async onBannerImageUpload({ targetId }) {
             console.log(1);
-            const mediaEntity = await this.mediaRepository.get(targetId);
-            this.element.config.sliderItems.value[this.bannerIndex].bannerImg = mediaEntity.id;
-            this.updateElementData(mediaEntity, this.bannerIndex)
+            const index = this.bannerIndex;
 
+            const mediaEntity = await this.mediaRepository.get(targetId);
+            const bannerImg = this.element.config.sliderItems.value[index].bannerImg;
+            console.log('onBannerImageUpload',mediaEntity);
+            bannerImg.id = mediaEntity.id;
+            if (mediaEntity.url) {
+                bannerImg.url = mediaEntity.url;
+            }
+            console.log('onBannerImageUpload',bannerImg);
+            this.updateElementData(mediaEntity, index)
             this.$emit('element-update', this.element);
 
         },
@@ -228,17 +239,17 @@ Component.register('sw-cms-el-config-image-slider-text', {
             console.log(index, 'onImageRemove');
             this.setBannerIndex(index);
             console.log(2);
-            this.element.config.sliderItems.value[this.bannerIndex].bannerImg = null;
+            this.element.config.sliderItems.value[this.bannerIndex].bannerImg.id = null;
+            this.element.config.sliderItems.value[this.bannerIndex].bannerImg.url = '';
             this.updateElementData(null, index);
             this.$emit('element-update', this.element);
         },
         updateElementData(media, index) {
-            console.log('updateElementData', media)
             if (media === null) {
-                this.$set(this.element.config.sliderItems.value[index], 'bannerImg',{ id:media });
+                this.$set(this.element.config.sliderItems.value[index], 'bannerImg',{ id:media, url:media.url });
                 console.log(this.element.config.sliderItems.value[index]);
             } else {
-                this.$set(this.element.config.sliderItems.value[index], 'bannerImg', { id:media.id });
+                this.$set(this.element.config.sliderItems.value[index], 'bannerImg', { id:media.id, url:media.url });
             }
         },
         onCloseModal() {
@@ -246,11 +257,16 @@ Component.register('sw-cms-el-config-image-slider-text', {
         },
 
         onSelectionChanges(mediaEntity) {
-            console.log(3);
+            console.log('onSelectionChanges', mediaEntity);
             const media = mediaEntity[0];
-            this.element.config.sliderItems.value[this.bannerIndex].bannerImg = media.id;
+            const bannerImg = this.element.config.sliderItems.value[this.bannerIndex].bannerImg
+            bannerImg.id = media.id;
+            if (mediaEntity.url) {
+                bannerImg.url = media.url;
+            }
             this.updateElementData(media, this.bannerIndex)
             this.$emit('element-update', this.element);
+            console.log(bannerImg, 'onSelectionChanges');
         },
         setBannerIndex(index) {
             console.log('setBannerIndex', index)
@@ -263,5 +279,15 @@ Component.register('sw-cms-el-config-image-slider-text', {
             this.setBannerIndex(index);
             this.mediaModalIsOpen = true;
         },
+        imageUploadShow(index) {
+            this.element.config.sliderItems.value.forEach(function (currentValue, arrIndex, array) {
+                console.log('imageUploadShow',index, arrIndex);
+                if (index === arrIndex) {
+                    currentValue.showBanner = true;
+                } else {
+                    currentValue.showBanner = false;
+                }
+            })
+        }
     },
 });

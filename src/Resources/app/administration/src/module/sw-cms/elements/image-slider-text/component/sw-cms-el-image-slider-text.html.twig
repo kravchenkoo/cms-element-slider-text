@@ -12,11 +12,22 @@
                 :class="[displayModeClass, navDotsClass]"
                 :style="styles"
             >
+                <div
+                    class="sw-cms-el-image-slider__banner-box"
+                    :style="{ 'background-color': '#' + bannerColor, 'background-image': 'url(' + bannerImg + ')' }"
+                >
+                    Lorem ipsum dolor sit amet,
+                    {{ bannerColor }}
+                    <button class="banner-text-link">Get it!</button>
+                </div>
                 <img
                     class="sw-cms-el-image-slider__image"
                     :src="imgSrc"
                     alt=""
                 >
+                <button v-if="element.config.scrollDown.value" class="image-slider-scroll-down">
+                    <div>Scroll down</div>
+                </button>
             </div>
         {% endblock %}
 
@@ -32,14 +43,14 @@
                             :class="navDotsClass"
                         >
                             <div class="sw-cms-el-image-slider__navigation-buttons">
-                                <template v-if="sliderItems && sliderItems.length > 0">
+                                <template v-if="element.config.sliderItems.value && element.config.sliderItems.value.length > 0">
                                     <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events -->
                                     <div
-                                        v-for="(sliderItem, index) in sliderItems"
+                                        v-for="(sliderItem, index) in element.config.sliderItems.value"
                                         :key="index"
-                                        :class="activeButtonClass(sliderItem.media.url)"
+                                        :class="activeButtonClass(sliderItem.mediaUrl)"
                                         class="sw-cms-el-image-slider__navigation-button"
-                                        @click="setSliderItem(sliderItem.media, index)"
+                                        @click="setSliderItem(sliderItem, index)"
                                     ></div>
                                 </template>
                                 <template v-else>
