@@ -65,7 +65,7 @@
                                     {% block element_image_slider_inner_item %}
                                         <div class="image-slider-item-container">
                                             {% if image.url %}
-                                                <a href="{{ image.url }}"
+                                                <a {% if element.config.sliderItems.value|first.newTab %}target="_blank"{% endif %} href="{{ image.url }}"
                                                    class="image-slider-link"
                                                    {% if image.newTab %}target="_blank" rel="noopener"{% endif %}>
                                                     {{ imageElement }}
